@@ -1,7 +1,10 @@
 This is the todo list for the ncurses chat client.
 If you are interested in working on any of these, please email cyrix@users.berlios.de.
 
-* General:
-  - first release
-
+* Before first release:
+	- error- and debugoutput-management
+	- complete default config-file
+	- connection handling
+	- **CHPRINT protocol wrapper implementation v0.1
+	- minimal ncurses-based gui
 

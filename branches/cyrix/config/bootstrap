@@ -1,0 +1,10 @@
+#!/bin/sh
+
+rm Makefile.in aclocal.m4 config.h.in stamp-h.in config.cache config.status \
+config.h stamp-h src/Makefile.in src/include/Makefile.in src/core/Makefile.in \
+Makefile src/Makefile src/include/Makefile src/core/Makefile configure
+
+echo
+echo "rebuilding autotool-generated files..."
+
+aclocal -I config && autoheader && automake --gnu --add-missing && autoconf

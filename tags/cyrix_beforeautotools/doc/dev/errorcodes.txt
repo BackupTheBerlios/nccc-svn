@@ -1,0 +1,23 @@
+nccc errorcode list
+-------------------------------------------------------------
+1xx	Core errors
+-------------------------------------------------------------
+100 Could not get path to home directory
+110 Could not create configuration directory
+111 Could not open configuration directory
+112 Could not create configuration file
+
+-------------------------------------------------------------
+2xx **CHPRINT errors
+-------------------------------------------------------------
+200 Could not open **CHPRINT-dir (dirname)
+201	Could not open **CHPRINT-file (inifilename)
+210 INFO-Section not found in (inifilename)
+211 INFO-Section (name) incomplete in (inifilename)
+212 CMD-Section not found in (inifilename)
+213 CMD-Section (name) incomplete in (inifilename)
+214 CMD-Subsection (name) not found in (inifilename)
+
+-------------------------------------------------------------
+3xx GUI errors
+-------------------------------------------------------------

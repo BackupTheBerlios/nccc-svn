@@ -1,0 +1,32 @@
+# Process this file with autoconf to produce a configure script.
+# 1. Boilerplate
+AC_INIT
+AC_PREREQ(2.13)
+AC_CONFIG_AUX_DIR(config)
+AM_INIT_AUTOMAKE(nccc,0.0.1alpha1)
+AM_CONFIG_HEADER(config.h)
+AC_DEFINE(_GNU_SOURCE)
+
+# 2. Checks for options.
+
+# 3. Checks for programs.
+AC_PROG_CC
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
+CFLAGS="${CFLAGS} -ansi -pedantic"
+
+# 4. Checks for libraries.
+
+# 5. Checks for header files.
+AC_HEADER_DIRENT
+AC_HEADER_STDC
+AC_CHECK_HEADERS([arpa/inet.h fcntl.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h])
+
+# 6. Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+
+# 7. Checks for library functions.
+AC_CHECK_FUNCS([gethostbyname memset mkdir socket strchr strdup strrchr])
+
+# 8. Output
+AC_OUTPUT(src/include/Makefile src/core/Makefile src/Makefile Makefile)

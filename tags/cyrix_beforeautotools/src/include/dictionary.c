@@ -24,8 +24,6 @@
    								Includes
  ---------------------------------------------------------------------------*/
 
-#include "config.h"
-
 #include "dictionary.h"
 
 #include <stdio.h>

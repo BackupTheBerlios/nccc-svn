@@ -1,0 +1,5 @@
+This is nccc, a console chat client providing a neat gui using ncurses.
+It only supports IRC and some webchats out-of-the-box, but can be enhanced
+without any programming skills or -knowledge by writing protocol wrappers in
+the form of .ini-files.
+

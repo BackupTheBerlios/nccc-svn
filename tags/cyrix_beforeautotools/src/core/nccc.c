@@ -20,12 +20,10 @@
 
 /* ncurses chat client main executable */
 
-#include "config.h"
-
 #include <stdio.h>	/* [f]printf() */
 
 #include "chprint.h"
-#include "conf.h"
+#include "config.h"
 
 char *homedir;                          
 struct chprint chprint_data[3];

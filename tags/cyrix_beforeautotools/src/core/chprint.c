@@ -20,8 +20,6 @@
 
 /* **CHatPRotocolINTerface-Implementation */
 
-#include "config.h"
-
 #include <stdio.h>	/* fprintf() */
 #include <sys/types.h>
 #include <dirent.h>	/* opendir(), readdir(), closedir() */

@@ -20,8 +20,6 @@
                                 Includes
  ---------------------------------------------------------------------------*/
 
-#include "config.h"
-
 #include "iniparser.h"
 #include "strlib.h"
 
