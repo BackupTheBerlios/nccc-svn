@@ -2,6 +2,10 @@ nccc errorcode list
 -------------------------------------------------------------
 1xx	Core errors
 -------------------------------------------------------------
+100 Could not get path to home directory
+110 Could not create configuration directory
+111 Could not open configuration directory
+112 Could not create configuration file
 
 -------------------------------------------------------------
 2xx **CHPRINT errors

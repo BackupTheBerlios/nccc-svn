@@ -20,36 +20,43 @@
 
 /* ncurses chat client main executable */
 
-#include <stdio.h>
+#include <stdio.h>	/* [f]printf() */
 
 #include "chprint.h"
-                          
+#include "config.h"
+
+char *homedir;                          
 struct chprint chprint_data[3];
                           
-
+/* this is the root */
 int main(int argc, char *argv[])
 {
 	int 	status;
 	
-/* Were any command-line arguments specified? */
-	if (argc >1)
+/* were any command-line arguments specified? */
+	if(argc >1)
 	{
-/* Yes, print them. */
+/* yes, print them. */
 		int i;
-		printf ("Arguments given:\n ");
-		for (i = 1; i < argc; ++i)
+		printf("Arguments given:\n ");
+		for(i = 1; i < argc; ++i)
 		{
 			printf("%s\n", argv[i]);
 		}
 	}	
 
+/* load configuration */
+	status = init_config();
+	fprintf(stderr, "home-directory: %s", homedir);
+	fprintf(stderr,"Errorcode: %i\n", status);
 /* load the **CHPRINT Translation files */	
 	status = load_chprint_files("chprint");
 /* test if loading succeeded */		
-	printf ("test filename #1 of chprint_data struct: %s\n", chprint_data[0].filename);
+	fprintf(stderr,"Errorcode: %i\n", status);
+	printf("test filename #1 of chprint_data struct: %s\n", chprint_data[0].filename);
 /* test if inifile is usable */
 	status = check_chprint_file(0);
-	printf ("Errorcode: %i\n", status);
-	
+	fprintf(stderr,"Errorcode: %i\n", status);
+
 	return status;
 }

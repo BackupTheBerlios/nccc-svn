@@ -18,20 +18,13 @@
  * 45279 Essen, Germany.
 */
 
-/* **CHatPRotocolINTerface-Implementation */
+/* Load, write and use the nccc.conf located in ~/.nccc */   
 
-#include "dictionary.h"
+/* check for ~./nccc/nccc.conf and create one if there is none */
+int init_config();
 
-struct chprint
-{
-	char            *filename;
-        int             version;  
-        dictionary      *data;    
-};
-                        
+/* verify config-file */
+int check_config();
 
-/* Load the **CHPRINT .ini-files located in chprint/ */   
-int load_chprint_files(char *chprint_dir);
 
-/* check a **CHPRINT-file for completeness */
-int check_chprint_file(int index);
+

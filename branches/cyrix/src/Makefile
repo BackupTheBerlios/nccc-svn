@@ -43,14 +43,18 @@ snl.o:		include/snl.c include/snl.h
 chprint.o:	libiniparser.a core/chprint.c core/chprint.h
 		$(CC) $(CFLAGS_LIB) -Iinclude -o core/chprint.o core/chprint.c
 
-nccc:		chprint.o core/nccc.c
-		$(CC) $(CFLAGS) -o nccc core/chprint.o core/nccc.c $(LFLAGS)
+config.o:	libiniparser.a core/config.c core/config.h
+		$(CC) $(CFLAGS_LIB) -Iinclude -o core/config.o core/config.c
+
+nccc:		chprint.o config.o core/nccc.c
+		$(CC) $(CFLAGS) -o nccc core/chprint.o core/config.o \
+		core/nccc.c $(LFLAGS)
 
 clean:
-		$(RM) core/chprint.o nccc
+		$(RM) core/chprint.o core/config.o nccc
 
 distclean:
-		$(RM) $(INIPARSER_OBJS) libiniparser.* core/chprint.o nccc
+		$(RM) $(INIPARSER_OBJS) libiniparser.* core/chprint.o corenccc
 
 
 docs:
