@@ -18,7 +18,7 @@
  * 45279 Essen, Germany.
 */
 
-/* Load and use the **CHPRINT .ini-files located in chprint/ */
+/* **CHatPRotocolINTerface-Implementation */
 
 #include <stdio.h>	/* fprintf() */
 #include <sys/types.h>
@@ -31,7 +31,7 @@
                         
 extern struct chprint chprint_data[3];
 
-
+/* Load the **CHPRINT .ini-files located in chprint/ */
 int load_chprint_files(char *chprint_dir)
 {
 	DIR 		*dir;
@@ -42,8 +42,8 @@ int load_chprint_files(char *chprint_dir)
 /* open **CHPRINT directory */
 	if ((dir = opendir(chprint_dir)) == NULL)
 	{
-		fprintf(stderr, "kann **CHPRINT-Verzeichnis \"%s\" nicht oeffnen", chprint_dir);
-		return 2;
+/* fprintf(stderr, "kann **CHPRINT-Verzeichnis \"%s\" nicht oeffnen", chprint_dir); */
+		return 200;
 	}
 /* find .ini-files and save their names */
 	while ((dir_list = readdir(dir)) != NULL)
@@ -68,9 +68,8 @@ int load_chprint_files(char *chprint_dir)
 /* loading ok ? */
 		if (chprint_data[i].data == NULL)
 		{
-			fprintf(stderr, "kann %s nicht parsen\n", chprint_data[i].filename);
 			perror("Fehler beim laden der INI-Datei");
-			return -1;
+			return 201;
 		}
 /* show it to me, baby ;) */
 		iniparser_dump(chprint_data[i].data, stderr);
@@ -79,40 +78,50 @@ int load_chprint_files(char *chprint_dir)
 }
 
 /* check a **CHPRINT-file for completeness */
-
 int check_chprint_file (int index)
 {
 	char	*chprint_cmdset_v01[6] = {"LOGIN", "CHROOM", "LOGOUT", "SENDMSG", "RECVERR", "KEEPALIVE"};
-	int	i, status = 0;
+	int	i;
 	char	chprint_cmd[15];
 	
-/* check INFO-block */
-	if (iniparser_getstring(chprint_data[index].data, "INFO:Name", "NULL") == "NULL")
+/* check INFO-Section */
+	if (iniparser_find_entry(chprint_data[index].data, "INFO") == 0)
 	{
-		status = 1;
-	}
-	if (iniparser_getstring(chprint_data[index].data, "INFO:LongName", "NULL") == "NULL")
-	{
-		status = 1;
-	}
-/* check CMD-block for **CHPRINT Version 0.1 */	
-	for(i = 0; i < 6; i++)
-	{
-		sprintf(chprint_cmd, "CMD:");
-		strcat(chprint_cmd, chprint_cmdset_v01[i]);
-		if (iniparser_getstring(chprint_data[index].data, chprint_cmd, "NULL") == "NULL")
+		return 210;
+	} else {		
+		if (iniparser_getstring(chprint_data[index].data, "INFO:Name", "NULL") == "NULL")
 		{
-			status = 2;
+			return 211;
+		}
+		if (iniparser_getstring(chprint_data[index].data, "INFO:LongName", "NULL") == "NULL")
+		{
+			return 211;
 		}
 	}
-/* error routine */
-	if (status == 1)
+/* check CMD-Section for **CHPRINT Version 0.1 commands */	
+	if (iniparser_find_entry(chprint_data[index].data, "CMD") == 0)
 	{
-		fprintf(stderr,"**CHPRINT INI-Fehler: INFO-Block unvollstaendig (%s)\n", chprint_data[index].filename);
+		return 212;
+	} else {		
+		for(i = 0; i < 6; i++)
+		{
+			sprintf(chprint_cmd, "CMD:");
+			strcat(chprint_cmd, chprint_cmdset_v01[i]);
+			if (iniparser_getstring(chprint_data[index].data, chprint_cmd, "NULL") == "NULL")
+			{
+				return 213;
+			}
+/* check CMD-Section for Subsections */
+			if (strcmp(iniparser_getstring(chprint_data[index].data, chprint_cmd, "NULL"), "SUB") == 0)
+			{
+				sprintf(chprint_cmd, "CMD/");
+				strcat(chprint_cmd, chprint_cmdset_v01[i]);
+				if (iniparser_find_entry(chprint_data[index].data, chprint_cmd) == 0)
+				{
+					return 214;
+				}
+			}
+		}
 	}
-	if (status == 2)
-	{
-		fprintf(stderr,"**CHPRINT INI-Fehler: CMD-Block unvollstaendig (%s)\n", chprint_data[index].filename);
-	}
-	return status;
+	return 0;
 }

@@ -48,12 +48,8 @@ int main(int argc, char *argv[])
 /* test if loading succeeded */		
 	printf ("test filename #1 of chprint_data struct: %s\n", chprint_data[0].filename);
 /* test if inifile is usable */
-	if (check_chprint_file(0) == 0)
-	{
-		printf("INI-File %s entspricht den **CHPRINT-Spezifikationen v0.1\n",chprint_data[0].filename);
-	} else {	
-		printf("INI-File %s entspricht NICHT den **CHPRINT-Spezifikationen v0.1\n",chprint_data[0].filename);
-	}
+	status = check_chprint_file(0);
+	printf ("Errorcode: %i\n", status);
 	
 	return status;
 }

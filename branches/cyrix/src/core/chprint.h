@@ -18,6 +18,8 @@
  * 45279 Essen, Germany.
 */
 
+/* **CHatPRotocolINTerface-Implementation */
+
 #include "dictionary.h"
 
 struct chprint
@@ -28,7 +30,7 @@ struct chprint
 };
                         
 
-/* Load and use the **CHPRINT .ini-files located in chprint/ */   
+/* Load the **CHPRINT .ini-files located in chprint/ */   
 int load_chprint_files(char *chprint_dir);
 
 /* check a **CHPRINT-file for completeness */
