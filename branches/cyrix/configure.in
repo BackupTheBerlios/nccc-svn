@@ -29,4 +29,4 @@ AC_C_CONST
 AC_CHECK_FUNCS([gethostbyname memset mkdir socket strchr strdup strrchr])
 
 # 8. Output
-AC_OUTPUT(src/include/Makefile src/core/Makefile src/Makefile Makefile)
+AC_OUTPUT(src/include/Makefile src/core/Makefile src/chprint/Makefile src/Makefile Makefile)

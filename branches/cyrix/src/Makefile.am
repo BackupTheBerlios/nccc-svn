@@ -1,2 +1,4 @@
 
-SUBDIRS = include core
+SUBDIRS = include core chprint
+
+
