@@ -1,6 +1,6 @@
 /* nccc is a chat client that provides a neat ncurses GUI and an
  * interface for extending its compatibility without programming skills.
- * Copyright (C) 2004 Alex T. and Marcel Wichern 
+ * Copyright (C) 2004 by Alex T. 
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -48,17 +48,15 @@ int main(int argc, char *argv[])
 	}	
 
 /* load configuration */
+	fprintf(stderr, "Initializing configuration...\n");
 	status = init_config();
-	fprintf(stderr, "home-directory: %s", homedir);
+	fprintf(stderr, "home-directory: %s\n", homedir);
 	fprintf(stderr,"Errorcode: %i\n", status);
 /* load the **CHPRINT Translation files */	
-	status = load_chprint_files("chprint");
+	status = load_chprint_files();
 /* test if loading succeeded */		
 	fprintf(stderr,"Errorcode: %i\n", status);
-	printf("test filename #1 of chprint_data struct: %s\n", chprint_data[0].filename);
-/* test if inifile is usable */
-	status = check_chprint_file(0);
-	fprintf(stderr,"Errorcode: %i\n", status);
 
-	return status;
+	
+	return status;	
 }

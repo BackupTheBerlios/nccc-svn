@@ -69,6 +69,8 @@ LIBS = -liniparser
 bin_PROGRAMS = nccc
 nccc_SOURCES = nccc.c conf.c conf.h chprint.c chprint.h
 nccc_LDFLAGS = -L../include
+
+DISTCLEANFILES = path.h
 mkinstalldirs = $(SHELL) $(top_srcdir)/config/mkinstalldirs
 CONFIG_HEADER = ../../config.h
 CONFIG_CLEAN_FILES = 
@@ -267,6 +269,7 @@ clean-generic:
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 mostlyclean-am:  mostlyclean-binPROGRAMS mostlyclean-compile \

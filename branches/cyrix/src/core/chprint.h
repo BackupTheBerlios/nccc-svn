@@ -1,6 +1,6 @@
 /* nccc is a chat client that provides a neat ncurses GUI and an
  * interface for extending its compatibility without programming skills.
- * Copyright (C) 2004 Alex T. and Marcel Wichern 
+ * Copyright (C) 2004 by Alex T.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@ struct chprint
                         
 
 /* Load the **CHPRINT .ini-files located in chprint/ */   
-int load_chprint_files(char *chprint_dir);
+int load_chprint_files();
 
 /* check a **CHPRINT-file for completeness */
 int check_chprint_file(int index);

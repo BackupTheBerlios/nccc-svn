@@ -1,6 +1,6 @@
 /* nccc is a chat client that provides a neat ncurses GUI and an
  * interface for extending its compatibility without programming skills.
- * Copyright (C) 2004 Alex T. and Marcel Wichern 
+ * Copyright (C) 2004 by Alex T.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,54 +25,93 @@
 #include <stdio.h>	/* fprintf() */
 #include <sys/types.h>
 #include <dirent.h>	/* opendir(), readdir(), closedir() */
-#include <string.h>	/* strcat(), strcmp(), strrchr() */
+#include <string.h>	/* strcpy(), strcat(), strcmp(), strrchr(), strlen() */
+#include <stdlib.h> 	/* malloc(), realloc() */
+#include <errno.h>	/* perror() */
 
 #include "iniparser.h"
 #include "chprint.h"
+#include "path.h"
 
 extern struct chprint chprint_data[3];
 
 /* Load the **CHPRINT .ini-files located in chprint/ */
-int load_chprint_files(char *chprint_dir)
+int load_chprint_files()
 {
 	DIR 		*dir;
 	struct dirent	*dir_list;
-	int		i, index = 0;
-	char		inifile[32];
+	int		i, index = 0, status = 0;
+	char		*chprintdir, tmp[80];
 	
-/* open **CHPRINT directory */
-	if((dir = opendir(chprint_dir)) == NULL)
+/* search and open **CHPRINT directory */
+	if((dir = opendir(gdatadir)) == NULL)
 	{
-		return 200;
-	}
-/* find .ini-files and save their names */
-	while((dir_list = readdir(dir)) != NULL)
-	{
-		if(strcmp(strrchr(dir_list->d_name, '.'), ".ini") == 0)
+		if((dir = opendir(ldatadir)) == NULL)
 		{
-/* printf("%s\n", dir_list->d_name); */
-			chprint_data[index++].filename = dir_list->d_name;
+			fprintf(stderr, "no datadir supplied. trying parent dir...\n");
+			strcpy(tmp, "..");
+			if((dir = opendir(tmp)) == NULL)
+			{
+				fprintf(stderr, "parent dir not accessible. exiting...\n");
+				return 200;
+			}
+		} else {
+			strcpy(tmp, ldatadir);
 		}
+	} else {
+		strcpy(tmp, gdatadir);
 	}
 	closedir(dir);
+	strcat(tmp, "/chprint");
+	chprintdir = malloc(strlen(tmp)+1); 
+	strcpy(chprintdir, tmp);
+	fprintf(stderr, "found chprint-dir: %s\n", chprintdir);
+
+	if((dir = opendir(chprintdir)) == NULL)
+	{
+		perror("fehlermeldung");
+		fprintf(stderr, "chprint dir not accessible. exiting...\n");
+		return 200;
+	}
+	
+/* find .ini-files and save their names */
+	while(NULL != (dir_list = readdir(dir)))
+	{
+		if(strrchr(dir_list->d_name, '.')) /* without this line filenames w/o '.' will cause a segfault */
+		{
+			if(strcmp(strrchr(dir_list->d_name, '.'), ".ini") == 0)
+			{
+				chprint_data[index].filename = dir_list->d_name;
+				index++;
+				/*fprintf(stderr, "%s is an .ini-file..\n", dir_list->d_name);*/
+			}
+		}
+	}
+	closedir(dir);	
+	
 /* load each ini-file */
 	for(i = 0; i < index; i++)
 	{
-/* need the correct path to the .ini's (should be in the config) */
-		sprintf(inifile, "chprint/");
-		strcat(inifile, chprint_data[i].filename);
+		sprintf(tmp, "%s/%s", chprintdir, chprint_data[i].filename);
 /* debug info */
-		fprintf(stderr, "loading ini-file: %s\n", inifile);
+		fprintf(stderr, "loading ini-file: %s\n", tmp);
 /* load it ! */
-		chprint_data[i].data = iniparser_load(inifile);
+		chprint_data[i].data = iniparser_load(tmp);
 /* loading ok ? */
-		if (chprint_data[i].data == NULL)
+		if(chprint_data[i].data == NULL)
 		{
 			return 201;
 		}
+		status = check_chprint_file(i);
+		if(status)
+		{
+			fprintf(stderr, "ini-file %s not ok: Errorcode %i\n", chprint_data[i].filename, status);			
+		} else {
+			fprintf(stderr, "ini-file %s ok! **CHPRINT-Version: %i\n", chprint_data[i].filename, chprint_data[i].version);
+		}
 /* debug: show it to me, baby ;) */
 /*		iniparser_dump(chprint_data[i].data, stderr); */
-	}	
+	}			
 	return 0;
 }
 

@@ -15,6 +15,7 @@ AC_PROG_MAKE_SET
 AC_PROG_RANLIB
 CFLAGS="${CFLAGS} -ansi -pedantic"
 
+
 # 4. Checks for libraries.
 
 # 5. Checks for header files.
@@ -28,5 +29,10 @@ AC_C_CONST
 # 7. Checks for library functions.
 AC_CHECK_FUNCS([gethostbyname memset mkdir socket strchr strdup strrchr])
 
-# 8. Output
+# 8. Output.
 AC_OUTPUT(src/include/Makefile src/core/Makefile src/chprint/Makefile src/Makefile Makefile)
+
+# 9. Additional data.
+LDATADIR=`pwd`"/src"
+GDATADIR="${prefix}/share/nccc"
+echo "char	*ldatadir= \"${LDATADIR}\", *gdatadir=\"${GDATADIR}\";" >src/core/path.h
