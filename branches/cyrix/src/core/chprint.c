@@ -74,7 +74,45 @@ int load_chprint_files(char *chprint_dir)
 		}
 /* show it to me, baby ;) */
 		iniparser_dump(chprint_data[i].data, stderr);
-	}
-	
+	}	
 	return 0;
+}
+
+/* check a **CHPRINT-file for completeness */
+
+int check_chprint_file (int index)
+{
+	char	*chprint_cmdset_v01[6] = {"LOGIN", "CHROOM", "LOGOUT", "SENDMSG", "RECVERR", "KEEPALIVE"};
+	int	i, status = 0;
+	char	chprint_cmd[15];
+	
+/* check INFO-block */
+	if (iniparser_getstring(chprint_data[index].data, "INFO:Name", "NULL") == "NULL")
+	{
+		status = 1;
+	}
+	if (iniparser_getstring(chprint_data[index].data, "INFO:LongName", "NULL") == "NULL")
+	{
+		status = 1;
+	}
+/* check CMD-block for **CHPRINT Version 0.1 */	
+	for(i = 0; i < 6; i++)
+	{
+		sprintf(chprint_cmd, "CMD:");
+		strcat(chprint_cmd, chprint_cmdset_v01[i]);
+		if (iniparser_getstring(chprint_data[index].data, chprint_cmd, "NULL") == "NULL")
+		{
+			status = 2;
+		}
+	}
+/* error routine */
+	if (status == 1)
+	{
+		fprintf(stderr,"**CHPRINT INI-Fehler: INFO-Block unvollstaendig (%s)\n", chprint_data[index].filename);
+	}
+	if (status == 2)
+	{
+		fprintf(stderr,"**CHPRINT INI-Fehler: CMD-Block unvollstaendig (%s)\n", chprint_data[index].filename);
+	}
+	return status;
 }

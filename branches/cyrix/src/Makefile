@@ -47,10 +47,11 @@ nccc:		chprint.o core/nccc.c
 		$(CC) $(CFLAGS) -o nccc core/chprint.o core/nccc.c $(LFLAGS)
 
 clean:
-		$(RM) $(INIPARSER_OBJS) nccc
+		$(RM) core/chprint.o nccc
 
 distclean:
 		$(RM) $(INIPARSER_OBJS) libiniparser.* core/chprint.o nccc
+
 
 docs:
 		@(cd doc ; $(MAKE))
@@ -59,4 +60,4 @@ check:
 		@(cd test ; $(MAKE))
 
 renew:		
-		make distclean && make all
+		make clean && make all

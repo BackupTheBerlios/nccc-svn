@@ -29,5 +29,7 @@ struct chprint
                         
 
 /* Load and use the **CHPRINT .ini-files located in chprint/ */   
-
 int load_chprint_files(char *chprint_dir);
+
+/* check a **CHPRINT-file for completeness */
+int check_chprint_file (int index);
